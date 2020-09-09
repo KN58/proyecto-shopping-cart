@@ -1,25 +1,34 @@
-//feature1
-import React from 'react';
+// feature1
+import React from "react";
 import data from "./data.json";
 import Products from "./components/Products";
-import Filter from './components/Filter';
-import Cart from './components/Cart';
+import Filter from "./components/Filter";
+import Cart from "./components/Cart";
 
-class App extends React.Component{
-  constructor(){
+class App extends React.Component {
+  constructor() {
     super();
     this.state = {
       products: data.products,
-      cartItems: [],
-      size:"",
-      sort:"",
-    }
+      cartItems: localStorage.getItem("cartItems")
+        ? JSON.parse(localStorage.getItem("cartItems"))
+        : [],
+      size: "",
+      sort: "",
+    };
   }
+  createOrder = (order) => {
+    alert("Necesitas guardar la orden para " + order.name);
+  };
   removeFromCart = (product) => {
     const cartItems = this.state.cartItems.slice();
     this.setState({
       cartItems: cartItems.filter((x) => x._id !== product._id),
     });
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(cartItems.filter((x) => x._id !== product._id))
+    );
   };
   addToCart = (product) => {
     const cartItems = this.state.cartItems.slice();
@@ -34,6 +43,7 @@ class App extends React.Component{
       cartItems.push({ ...product, count: 1 });
     }
     this.setState({ cartItems });
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
   sortProducts = (event) => {
     // impl
@@ -72,36 +82,38 @@ class App extends React.Component{
       });
     }
   };
-  render(){
-  return (
-  <div className="grid-container">
-    <header>
-      <a href="/">Carrito de compras React</a>
-    </header>
-    <main>
-      <div className="content">
-        <div className="main">
-          <Filter count={this.state.products.length}
-            size={this.state.size}
-            sort={this.state.sort}
-            filterProducts={this.filterProducts}
-            sortProducts={this.sortProducts}>
-          </Filter>
-          <Products
+  render() {
+    return (
+      <div className="grid-container">
+        <header>
+          <a href="/">Carrito de compras React</a>
+        </header>
+        <main>
+          <div className="content">
+            <div className="main">
+              <Filter
+                count={this.state.products.length}
+                size={this.state.size}
+                sort={this.state.sort}
+                filterProducts={this.filterProducts}
+                sortProducts={this.sortProducts}
+              ></Filter>
+              <Products
                 products={this.state.products}
                 addToCart={this.addToCart}
-          ></Products>
-        </div>
-        <div className="sidebar">
-        <Cart
+              ></Products>
+            </div>
+            <div className="sidebar">
+              <Cart
                 cartItems={this.state.cartItems}
                 removeFromCart={this.removeFromCart}
-        />
-        </div>
+                createOrder={this.createOrder}
+              />
+            </div>
+          </div>
+        </main>
+        <footer>Todos los derechos estan reservados.</footer>
       </div>
-    </main>
-    <footer>Todos los derechos estan reservados</footer>
-  </div>
     );
   }
 }
