@@ -1,4 +1,3 @@
-  
 import React, { Component } from "react";
 
 export default class Filter extends Component {
@@ -10,12 +9,12 @@ export default class Filter extends Component {
           Orden{" "}
           <select value={this.props.sort} onChange={this.props.sortProducts}>
             <option>Reciente</option>
-            <option value="lowest">Mas bajo</option>
-            <option value="highest">Mas alto</option>
+            <option value="lowest">Más bajo</option>
+            <option value="highest">Más alto</option>
           </select>
         </div>
         <div className="filter-size">
-          Filtro{" "}
+          Filter{" "}
           <select value={this.props.size} onChange={this.props.filterProducts}>
             <option value="">Todo</option>
             <option value="XS">XS</option>
@@ -29,4 +28,4 @@ export default class Filter extends Component {
       </div>
     );
   }
-}
+}  
